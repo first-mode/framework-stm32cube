@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -84,9 +83,17 @@ typedef struct
   /**
     * @brief  Reports to the PRL that a tx operation has been completed.
     * @param  PortNum:    The handle of the port
+    * @param  Status:  0 if no error else error
     * @retval None
     */
-  void (*USBPD_PHY_TxCompleted)(uint8_t PortNum);
+  void (*USBPD_PHY_TxCompleted)(uint8_t PortNum, uint32_t Status);
+
+  /**
+    * @brief  Reports to the PRL that an FRS has been detected.
+    * @param  PortNum:    The handle of the port
+    * @retval None
+    */
+  void (*USBPD_PHY_FastRoleSwapReception)(uint8_t PortNum);
 
 } USBPD_PHY_Callbacks;
 
@@ -106,6 +113,7 @@ typedef struct
 USBPD_StatusTypeDef USBPD_PHY_Init(uint8_t PortNum, const USBPD_PHY_Callbacks *cbs, uint8_t *pRxBuffer, USBPD_PortPowerRole_TypeDef role, uint32_t SupportedSOP);
 void                USBPD_PHY_Reset(uint8_t PortNum);
 uint16_t            USBPD_PHY_GetRetryTimerValue(uint8_t PortNum);
+uint16_t            USBPD_PHY_GetMinGOODCRCTimerValue(uint8_t PortNum);
 
 USBPD_StatusTypeDef USBPD_PHY_ResetRequest(uint8_t PortNum, USBPD_SOPType_TypeDef Type);
 USBPD_StatusTypeDef USBPD_PHY_SendMessage(uint8_t PortNum, USBPD_SOPType_TypeDef Type, uint8_t *pBuffer, uint16_t Size);
@@ -141,6 +149,4 @@ void                USBPD_PHY_DisableRX(uint8_t PortNum);
 #endif
 
 #endif /* __USBPD_PHY_H_ */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 

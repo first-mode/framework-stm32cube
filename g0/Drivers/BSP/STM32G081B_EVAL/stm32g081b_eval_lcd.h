@@ -7,12 +7,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2018 STMicroelectronics</center></h2>
+  * Copyright (c) 2018-2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -120,7 +120,7 @@ typedef enum
 #define LCD_G(__G_COLOR__)       (((__G_COLOR__>>2)&0x3F)<<5)
 #define LCD_B(__B_COLOR__)       ((__B_COLOR__>>3)&0x1F)
 
-/* Defintion of Official ST COLOR */
+/* Definition of Official ST COLOR */
 #define LCD_COLOR_ST_BLUE_DARK   (LCD_R(0x00)|LCD_G(0x20)|LCD_B(0x52))
 #define LCD_COLOR_ST_BLUE        (LCD_R(0x39)|LCD_G(0xA9)|LCD_B(0xDC))
 #define LCD_COLOR_ST_BLUE_LIGHT  (LCD_R(0xD1)|LCD_G(0xE4)|LCD_B(0xF3))

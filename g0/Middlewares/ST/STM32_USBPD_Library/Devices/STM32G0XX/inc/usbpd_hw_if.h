@@ -7,13 +7,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -72,44 +71,49 @@ typedef struct
 {
   /**
   * @brief  The message transfer has been completed
-  * @param  PortNum The current port number
+  * @param  PortNum Port number
+  * @param  Status (0 means OK)
   * @retval None
   */
-  void (*USBPD_HW_IF_TxCompleted)(uint8_t PortNum);
+  void (*USBPD_HW_IF_TxCompleted)(uint8_t PortNum, uint32_t Status);
+
   /**
   * @brief  Bist data sent callback from PHY_HW_IF
-  * @param  PortNum Index of current used port
+  * @param  PortNum Port number
   * @param  bistmode: Bist mode
   * @retval None
   */
   void (*USBPD_HW_IF_BistCompleted)(uint8_t PortNum, USBPD_BISTMsg_TypeDef bistmode);
-  /**
-  * @brief  A new message is incoming, need to reset the status.
-  * @param  PortNum The current port number
-  * @retval The status of the decoding process
-  */
-  USBPD_PHY_RX_Status_TypeDef(*USBPD_HW_IF_RX_Reset)(uint8_t PortNum);
 
   /**
   * @brief  The reception phase of an hard reset is completed notify it.
-  * @param  PortNum The current port number
+  * @param  PortNum Port number
+  * @param  SOPType SOP Message Type based on @ref USBPD_SOPType_TypeDef
   * @retval None
   */
-  void (*USBPD_HW_IF_RX_ResetIndication)(uint8_t PortNum);
+  void (*USBPD_HW_IF_RX_ResetIndication)(uint8_t PortNum, USBPD_SOPType_TypeDef Type);
 
   /**
   * @brief  The reception phase of the current message is completed and notify it.
-  * @param  PortNum The current port number
+  * @param  PortNum Port number
+  * @param  MsgType Message Type
   * @retval None
   */
-  void (*USBPD_HW_IF_RX_Completed)(uint8_t PortNum, uint32_t MsgType, uint16_t RxPaySize);
+  void (*USBPD_HW_IF_RX_Completed)(uint8_t PortNum, uint32_t MsgType);
 
   /**
   * @brief  The emission of HRST has been completed.
-  * @param  PortNum The current port number
+  * @param  PortNum Port number
   * @retval None
   */
   void (*USBPD_HW_IF_TX_HardResetCompleted)(uint8_t PortNum, USBPD_SOPType_TypeDef Type);
+
+  /**
+  * @brief  FRS reception.
+  * @param  PortNum Port number
+  * @retval None
+  */
+  void (*USBPD_HW_IF_TX_FRSReception)(uint8_t PortNum);
 
 } USBPD_HW_IF_Callbacks;
 
@@ -126,9 +130,6 @@ typedef struct
   USBPD_SettingsTypeDef       *settings;
   USBPD_ParamsTypeDef         *params;
   USBPD_HW_IF_Callbacks        cbs;             /*!< USBPD_PHY_HW_IF callbacks         */
-
-  __IO uint32_t                PIN_CC1;             /*!< CC1 detection state               */
-  __IO uint32_t                PIN_CC2;             /*!< CC2 detection state               */
 
   void (*USBPD_CAD_WakeUp)(void);               /*!< function used to wakeup cad task   */
 
@@ -198,6 +199,7 @@ void USBPD_HW_IF_GlobalHwInit(void);
   */
 USBPD_StatusTypeDef USBPD_HW_IF_SendBuffer(uint8_t PortNum, USBPD_SOPType_TypeDef Type, uint8_t *pBuffer, uint32_t Bitsize);
 
+#if defined(_SRC) || defined(_DRP)
 /**
   * @brief  Enable the VBUS on a specified port.
   * @param  PortNum     The port handle.
@@ -208,6 +210,7 @@ USBPD_StatusTypeDef USBPD_HW_IF_SendBuffer(uint8_t PortNum, USBPD_SOPType_TypeDe
   * @retval USBPD status
   */
 USBPD_StatusTypeDef HW_IF_PWR_Enable(uint8_t PortNum, USBPD_FunctionalState State, CCxPin_TypeDef Cc, uint32_t VconnState, USBPD_PortPowerRole_TypeDef role);
+#endif /* _SRC || _DRP */
 
 /**
   * @brief  Retrieve the VBUS status for a specified port.
@@ -289,7 +292,7 @@ void USBPD_HW_IF_Send_BIST_Pattern(uint8_t PortNum);
 void HW_SignalDetachment(uint8_t PortNum);
 
 /**
-  * @brief  Sends an Attachement signal.
+  * @brief  Sends an Attachment signal.
   * @param  PortNum The port handle.
   * @param  cc the PD pin.
   * @retval none
@@ -370,6 +373,4 @@ void    USBPD_HW_IF_DisableRX(uint8_t PortNum);
 #endif
 
 #endif /* __USBPD_HW_IF_H_ */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 

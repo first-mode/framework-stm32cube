@@ -7,12 +7,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2019 STMicroelectronics</center></h2>
+  * Copyright (c) 2019-2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -228,7 +228,7 @@ PWRMON_StatusTypeDef BSP_PWRMON_StopMeasure(Alert_TypeDef Alert)
 }
 
 /**
- * @brief  Retreive the conversion ready state of the power monitor device
+ * @brief  Retrieve the conversion ready state of the power monitor device
  *         assigned to a given Alert pin.
  * @param  Alert Alert pin identifier
  *         This parameter can be take one of the following values:
@@ -243,7 +243,7 @@ uint8_t BSP_PWRMON_IsConversionReady(Alert_TypeDef Alert)
 }
 
 /**
- * @brief  Retreive the Alert Function Flag of the power monitor device
+ * @brief  Retrieve the Alert Function Flag of the power monitor device
  *         assigned to a given Alert pin.
  * @param  Alert Alert pin identifier
  *         This parameter can be take one of the following values:
